@@ -1,7 +1,10 @@
+using CareerGauge.Application.Recommendations;
+using CareerGauge.Infrastructure.Recommendations;
 using CareerGauge.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using CareerGauge.Application.Readiness;
 using CareerGauge.Infrastructure.Readiness;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,14 @@ builder.Services.AddScoped<IReadinessService, ReadinessService>();
 builder.Services.AddScoped<
     IReadinessRepository,
     ReadinessRepository>();
+
+builder.Services.AddScoped<
+    IRecommendationService,
+    RecommendationService>();
+
+builder.Services.AddScoped<
+    IRecommendationRepository,
+    RecommendationRepository>();
 
 builder.Services.AddControllers();
 

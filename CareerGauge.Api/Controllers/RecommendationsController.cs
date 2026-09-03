@@ -25,4 +25,18 @@ public class RecommendationsController : ControllerBase
 
         return Ok(recommendations);
     }
+
+    [HttpGet("{learnerId}/career/{careerProfileId}")]
+    public async Task<IActionResult> GetRecommendationDetails(
+        int learnerId,
+        int careerProfileId)
+    {
+        var result =
+            await _recommendationService
+                .GetRecommendationDetailsAsync(
+                    learnerId,
+                    careerProfileId);
+
+        return Ok(result);
+    }
 }

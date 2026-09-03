@@ -1,6 +1,6 @@
 using CareerGauge.Application.Readiness;
+using CareerGauge.Application.Readiness.Dtos;
 using CareerGauge.Application.Recommendations.Dtos;
-using CareerGauge.Domain.Entities;
 
 namespace CareerGauge.Application.Recommendations;
 
@@ -20,8 +20,7 @@ public class RecommendationService : IRecommendationService
     public async Task<List<CareerRecommendationDto>>
         GetRecommendationsAsync(int learnerId)
     {
-        var learner = await _repository
-            .GetLearnerAsync(learnerId);
+        var learner = await _repository.GetLearnerAsync(learnerId);
 
         if (learner is null)
         {
@@ -29,8 +28,7 @@ public class RecommendationService : IRecommendationService
                 $"Learner with ID {learnerId} was not found.");
         }
 
-        var careers = await _repository
-            .GetCareerProfilesAsync();
+        var careers = await _repository.GetCareerProfilesAsync();
 
         var recommendations = new List<CareerRecommendationDto>();
 
@@ -45,29 +43,36 @@ public class RecommendationService : IRecommendationService
             {
                 CareerProfileId = career.Id,
                 CareerName = career.Name,
-                ReadinessPercentage =
-                    readiness.ReadinessPercentage,
-                RequiredSkills =
-                    readiness.RequiredSkills,
-                MetSkills =
-                    readiness.MetSkills,
-                PartialSkills =
-                    readiness.PartialSkills,
-                MissingSkills =
-                    readiness.MissingSkills,
-                SkillGapCount =
-                    readiness.SkillGaps.Count(
-                        gap => gap.Gap > 0)
+                ReadinessPercentage = readiness.ReadinessPercentage,
+                RequiredSkills = readiness.RequiredSkills,
+                MetSkills = readiness.MetSkills,
+                PartialSkills = readiness.PartialSkills,
+                MissingSkills = readiness.MissingSkills,
+                SkillGapCount = readiness.SkillGaps.Count(
+                    gap => gap.Gap > 0)
             });
         }
 
         return recommendations
-            .OrderByDescending(
-                recommendation =>
-                    recommendation.ReadinessPercentage)
-            .ThenBy(
-                recommendation =>
-                    recommendation.SkillGapCount)
+            .OrderByDescending(r => r.ReadinessPercentage)
+            .ThenBy(r => r.SkillGapCount)
             .ToList();
+    }
+
+    public async Task<ReadinessResultDto> GetRecommendationDetailsAsync(
+        int learnerId,
+        int careerProfileId)
+    {
+        var learner = await _repository.GetLearnerAsync(learnerId);
+
+        if (learner is null)
+        {
+            throw new KeyNotFoundException(
+                $"Learner with ID {learnerId} was not found.");
+        }
+
+        return await _readinessService.CalculateAsync(
+            learnerId,
+            careerProfileId);
     }
 }

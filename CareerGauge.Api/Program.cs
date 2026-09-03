@@ -28,8 +28,19 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IRecommendationRepository,
     RecommendationRepository>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CareerGaugeClient", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4201")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddControllers();
+
 
 
 var app = builder.Build();
@@ -48,6 +59,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("CareerGaugeClient");
 app.MapControllers();
 
 var summaries = new[]

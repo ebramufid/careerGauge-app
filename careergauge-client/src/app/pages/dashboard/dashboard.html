@@ -1,0 +1,83 @@
+<div class="dashboard">
+  <header class="dashboard-header">
+    <div>
+      <p class="eyebrow">CAREERGAUGE</p>
+      <h1>Career Dashboard</h1>
+      <p class="subtitle">
+        Discover careers that match your current skills.
+      </p>
+    </div>
+  </header>
+
+  @if (isLoading()) {
+    <section class="state-card">
+      <p>Loading your career recommendations...</p>
+    </section>
+  }
+
+  @if (errorMessage()) {
+    <section class="state-card error">
+      <p>{{ errorMessage() }}</p>
+    </section>
+  }
+
+  @if (!isLoading() && !errorMessage()) {
+    <section class="recommendations">
+      <div class="section-header">
+        <div>
+          <h2>Your Career Matches</h2>
+          <p>
+            Based on your current skill profile.
+          </p>
+        </div>
+      </div>
+
+      <div class="career-grid">
+        @for (career of recommendations(); track career.careerProfileId) {
+          <article class="career-card">
+            <div class="card-header">
+              <div>
+                <h3>{{ career.careerName }}</h3>
+                <span>
+                  {{ career.skillGapCount }} skill gaps
+                </span>
+              </div>
+
+              <div class="score">
+                {{ career.readinessPercentage }}%
+              </div>
+            </div>
+
+            <div class="progress-track">
+              <div
+                class="progress-bar"
+                [style.width.%]="career.readinessPercentage">
+              </div>
+            </div>
+
+            <div class="stats">
+              <div>
+                <strong>{{ career.metSkills }}</strong>
+                <span>Met</span>
+              </div>
+
+              <div>
+                <strong>{{ career.partialSkills }}</strong>
+                <span>Partial</span>
+              </div>
+
+              <div>
+                <strong>{{ career.missingSkills }}</strong>
+                <span>Missing</span>
+              </div>
+            </div>
+
+            <button type="button">
+              View Career Details
+            </button>
+          </article>
+        }
+      </div>
+    </section>
+  }
+</div>

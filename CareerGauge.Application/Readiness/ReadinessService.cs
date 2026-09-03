@@ -1,3 +1,4 @@
+using CareerGauge.Application.Recommendations.Dtos;
 using CareerGauge.Application.Readiness.Dtos;
 using CareerGauge.Domain.Entities;
 
@@ -91,17 +92,35 @@ public class ReadinessService : IReadinessService
             : ((metSkills + partialSkills * 0.5m)
                 / requiredSkills) * 100m;
 
+        var learningPriorities = skillGaps
+    .Where(gap => gap.Gap > 0)
+    .OrderByDescending(gap => gap.Status == "Missing")
+    .ThenByDescending(gap => gap.Gap)
+    .Select(gap => new LearningPriorityDto
+    {
+        SkillId = gap.SkillId,
+        SkillName = gap.SkillName,
+        CurrentLevel = gap.CurrentLevel,
+        TargetLevel = gap.RequiredLevel,
+        Gap = gap.Gap,
+        Status = gap.Status,
+        Priority = gap.Status == "Missing"
+            ? "High"
+            : "Medium"
+    })
+    .ToList();
+
         return new ReadinessResultDto
         {
             CareerProfileId = career.Id,
             CareerName = career.Name,
-            ReadinessPercentage =
-                Math.Round(readinessPercentage, 2),
+            ReadinessPercentage = Math.Round(readinessPercentage, 2),
             RequiredSkills = requiredSkills,
             MetSkills = metSkills,
             PartialSkills = partialSkills,
             MissingSkills = missingSkills,
-            SkillGaps = skillGaps
+            SkillGaps = skillGaps,
+            LearningPriorities = learningPriorities
         };
     }
 }

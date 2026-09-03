@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CareerGauge.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2ca16e77b54d44972ddf93167a60d1afc61a0dd0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c48088f8a28196be6fbf042bff9c5fbdc8010239")]
 [assembly: System.Reflection.AssemblyProductAttribute("CareerGauge.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CareerGauge.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

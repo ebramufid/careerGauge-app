@@ -18,7 +18,9 @@ builder.Services.AddScoped<
     IReadinessRepository,
     ReadinessRepository>();
 
-    
+builder.Services.AddControllers();
+
+
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
@@ -35,6 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
 var summaries = new[]
 {

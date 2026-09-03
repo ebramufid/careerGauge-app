@@ -15,3 +15,5 @@ C:\Users\Public\CareerGauge\CareerGauge.Infrastructure\bin\Debug\net10.0\CareerG
 C:\Users\Public\CareerGauge\CareerGauge.Infrastructure\bin\Debug\net10.0\CareerGauge.Application.pdb
 C:\Users\Public\CareerGauge\CareerGauge.Infrastructure\obj\Debug\net10.0\CareerGauge.Infrastructure.csproj.AssemblyReference.cache
 C:\Users\Public\CareerGauge\CareerGauge.Infrastructure\obj\Debug\net10.0\CareerGa.B0501929.Up2Date
+C:\Users\Public\CareerGauge\CareerGauge.Infrastructure\bin\Debug\net10.0\CareerGauge.Infrastructure.runtimeconfig.json
+C:\Users\Public\CareerGauge\CareerGauge.Infrastructure\obj\Debug\net10.0\CareerGauge.Infrastructure.genruntimeconfig.cache

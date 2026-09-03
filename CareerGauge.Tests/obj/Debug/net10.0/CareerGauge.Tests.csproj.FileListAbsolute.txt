@@ -112,3 +112,16 @@ C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\CareerGauge.Api.
 C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\CareerGauge.Application.pdb
 C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\CareerGauge.Domain.pdb
 C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\CareerGauge.Infrastructure.pdb
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Microsoft.Extensions.Logging.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Microsoft.Extensions.Options.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Npgsql.dll
+C:\Users\Public\CareerGauge\CareerGauge.Tests\bin\Debug\net10.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll

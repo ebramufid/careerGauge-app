@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CareerGauge.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6d90e03b5be9dbd46b22af2f8e791440f09af3c8")]
 [assembly: System.Reflection.AssemblyProductAttribute("CareerGauge.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CareerGauge.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

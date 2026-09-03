@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="CareerGauge.Api/CareerGauge.Api.csproj" />
+  <Project Path="CareerGauge.Application/CareerGauge.Application.csproj" />
+  <Project Path="CareerGauge.Domain/CareerGauge.Domain.csproj" />
+  <Project Path="CareerGauge.Infrastructure/CareerGauge.Infrastructure.csproj" />
+  <Project Path="CareerGauge.Tests/CareerGauge.Tests.csproj" />
+</Solution>

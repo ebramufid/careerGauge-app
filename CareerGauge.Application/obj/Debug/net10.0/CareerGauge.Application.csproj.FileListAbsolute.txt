@@ -1,0 +1,15 @@
+C:\Users\Public\CareerGauge\CareerGauge.Application\bin\Debug\net10.0\CareerGauge.Application.deps.json
+C:\Users\Public\CareerGauge\CareerGauge.Application\bin\Debug\net10.0\CareerGauge.Application.dll
+C:\Users\Public\CareerGauge\CareerGauge.Application\bin\Debug\net10.0\CareerGauge.Application.pdb
+C:\Users\Public\CareerGauge\CareerGauge.Application\obj\Debug\net10.0\CareerGauge.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Public\CareerGauge\CareerGauge.Application\obj\Debug\net10.0\CareerGauge.Application.AssemblyInfoInputs.cache
+C:\Users\Public\CareerGauge\CareerGauge.Application\obj\Debug\net10.0\CareerGauge.Application.AssemblyInfo.cs
+C:\Users\Public\CareerGauge\CareerGauge.Application\obj\Debug\net10.0\CareerGauge.Application.csproj.CoreCompileInputs.cache
+C:\Users\Public\CareerGauge\CareerGauge.Application\obj\Debug\net10.0\CareerGauge.Application.dll
+C:\Users\Public\CareerGauge\CareerGauge.Application\obj\Debug\net10.0\refint\CareerGauge.Application.dll
+C:\Users\Public\CareerGauge\CareerGauge.Application\obj\Debug\net10.0\CareerGauge.Application.pdb
+C:\Users\Public\CareerGauge\CareerGauge.Application\obj\Debug\net10.0\ref\CareerGauge.Application.dll
+C:\Users\Public\CareerGauge\CareerGauge.Application\bin\Debug\net10.0\CareerGauge.Domain.dll
+C:\Users\Public\CareerGauge\CareerGauge.Application\bin\Debug\net10.0\CareerGauge.Domain.pdb
+C:\Users\Public\CareerGauge\CareerGauge.Application\obj\Debug\net10.0\CareerGauge.Application.csproj.AssemblyReference.cache
+C:\Users\Public\CareerGauge\CareerGauge.Application\obj\Debug\net10.0\CareerGa.290F554C.Up2Date

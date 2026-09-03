@@ -1,5 +1,7 @@
 using CareerGauge.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using CareerGauge.Application.Readiness;
+using CareerGauge.Infrastructure.Readiness;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,14 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<CareerGaugeDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("CareerGaugeDatabase")));
+
+builder.Services.AddScoped<IReadinessService, ReadinessService>();
+
+builder.Services.AddScoped<
+    IReadinessRepository,
+    ReadinessRepository>();
+
+    
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {

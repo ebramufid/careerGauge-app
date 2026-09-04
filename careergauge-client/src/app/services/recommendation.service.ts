@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { CareerRecommendation } from '../models/career-recommendation';
 import { ReadinessResult } from '../models/readiness-result';
 import { CareerComparison } from '../models/career-comparison';
+import { CareerProfile } from '../models/career-profile';
+
 
 @Injectable({
   providedIn: 'root'
@@ -44,4 +46,11 @@ export class RecommendationService {
     `${this.apiUrl}/${learnerId}/compare?${params}`
   );
 }
+
+getCareerProfiles(): Observable<CareerProfile[]> {
+  return this.http.get<CareerProfile[]>(
+    `${this.apiUrl}/careers`
+  );
+}
+
 }

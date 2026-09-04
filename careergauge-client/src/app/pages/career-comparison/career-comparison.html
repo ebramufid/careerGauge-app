@@ -12,77 +12,178 @@
     <h1>Compare Careers</h1>
 
     <p class="subtitle">
-      See how your current skills match different
-      career paths.
+      Choose the career paths you are considering and
+      see how your current skills compare.
     </p>
   </header>
 
   @if (isLoading()) {
     <div class="state-card">
-      <p>Loading career comparison...</p>
+      <p>Loading careers...</p>
     </div>
   }
 
-  @else if (errorMessage()) {
+  @else if (errorMessage() && comparisons().length === 0) {
     <div class="state-card error">
       <p>{{ errorMessage() }}</p>
     </div>
   }
 
   @else {
-    <div class="comparison-grid">
 
-      @for (
-        career of comparisons();
-        track career.careerProfileId
-      ) {
+    <section class="selection-section">
 
-        <article class="career-card">
+      <div class="selection-header">
+        <div>
+          <h2>Select careers</h2>
 
-          <div class="career-card-header">
-            <h2>{{ career.careerName }}</h2>
+          <p>
+            Choose 2–3 career paths to compare.
+          </p>
+        </div>
+
+        <span class="selection-count">
+          {{ selectedCareerIds().length }} / 3 selected
+        </span>
+      </div>
+
+      <div class="career-options">
+
+        @for (
+          career of careers();
+          track career.careerProfileId
+        ) {
+
+          <button
+            type="button"
+            class="career-option"
+            [class.selected]="
+              isSelected(career.careerProfileId)
+            "
+            [disabled]="
+              !isSelected(career.careerProfileId) &&
+              selectedCareerIds().length >= 3
+            "
+            (click)="toggleCareer(career.careerProfileId)">
+
+            <span class="selection-indicator">
+              @if (isSelected(career.careerProfileId)) {
+                ✓
+              } @else {
+                +
+              }
+            </span>
 
             <span>
-              {{ career.readinessPercentage }}%
+              {{ career.careerName }}
             </span>
-          </div>
 
-          <div class="progress-track">
-            <div
-              class="progress-bar"
-              [style.width.%]="career.readinessPercentage">
-            </div>
-          </div>
+          </button>
 
-          <div class="stats">
+        }
 
-            <div>
-              <strong>{{ career.metSkills }}</strong>
-              <span>Met</span>
-            </div>
+      </div>
 
-            <div>
-              <strong>{{ career.partialSkills }}</strong>
-              <span>Partial</span>
-            </div>
-
-            <div>
-              <strong>{{ career.missingSkills }}</strong>
-              <span>Missing</span>
-            </div>
-
-            <div>
-              <strong>{{ career.skillGapCount }}</strong>
-              <span>Skill gaps</span>
-            </div>
-
-          </div>
-
-        </article>
-
+      @if (errorMessage()) {
+        <div class="error-message">
+          {{ errorMessage() }}
+        </div>
       }
 
-    </div>
+      <button
+        type="button"
+        class="compare-button"
+        [disabled]="selectedCareerIds().length < 2"
+        (click)="compareSelected()">
+        Compare Selected Careers
+      </button>
+
+    </section>
+
+    @if (comparisons().length > 0) {
+
+      <section class="results-section">
+
+        <div class="results-header">
+          <div>
+            <p class="eyebrow">RESULTS</p>
+
+            <h2>Your career comparison</h2>
+          </div>
+        </div>
+
+        <div class="comparison-grid">
+
+          @for (
+            career of comparisons();
+            track career.careerProfileId
+          ) {
+
+            <article class="career-card">
+
+              <div class="career-card-header">
+
+                <h3>
+                  {{ career.careerName }}
+                </h3>
+
+                <span>
+                  {{ career.readinessPercentage }}%
+                </span>
+
+              </div>
+
+              <div class="progress-track">
+                <div
+                  class="progress-bar"
+                  [style.width.%]="
+                    career.readinessPercentage
+                  ">
+                </div>
+              </div>
+
+              <div class="stats">
+
+                <div>
+                  <strong>
+                    {{ career.metSkills }}
+                  </strong>
+                  <span>Met</span>
+                </div>
+
+                <div>
+                  <strong>
+                    {{ career.partialSkills }}
+                  </strong>
+                  <span>Partial</span>
+                </div>
+
+                <div>
+                  <strong>
+                    {{ career.missingSkills }}
+                  </strong>
+                  <span>Missing</span>
+                </div>
+
+                <div>
+                  <strong>
+                    {{ career.skillGapCount }}
+                  </strong>
+                  <span>Skill gaps</span>
+                </div>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
   }
 
 </div>

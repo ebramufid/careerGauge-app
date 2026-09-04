@@ -142,4 +142,19 @@ public class RecommendationService : IRecommendationService
             .ThenBy(c => c.SkillGapCount)
             .ToList();
     }
+
+
+    public async Task<List<CareerProfileDto>> GetCareerProfilesAsync()
+    {
+        var careerProfiles =
+            await _repository.GetCareerProfilesAsync();
+
+        return careerProfiles
+            .Select(career => new CareerProfileDto
+            {
+                CareerProfileId = career.Id,
+                CareerName = career.Name
+            })
+            .ToList();
+    }
 }

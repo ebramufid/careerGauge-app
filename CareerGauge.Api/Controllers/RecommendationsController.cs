@@ -54,4 +54,15 @@ public class RecommendationsController : ControllerBase
 
         return Ok(comparisons);
     }
+
+
+    [HttpGet("careers")]
+    public async Task<IActionResult> GetCareerProfiles()
+    {
+        var careers =
+            await _recommendationService
+                .GetCareerProfilesAsync();
+
+        return Ok(careers);
+    }
 }

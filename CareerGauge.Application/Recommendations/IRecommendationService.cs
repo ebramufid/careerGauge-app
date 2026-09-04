@@ -15,4 +15,6 @@ public interface IRecommendationService
     Task<List<CareerComparisonDto>> GetComparisonAsync(
         int learnerId,
         List<int> careerProfileIds);
+
+    Task<List<CareerProfileDto>> GetCareerProfilesAsync();
 }

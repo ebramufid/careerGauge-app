@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 
 import { RecommendationService } from '../../services/recommendation.service';
 import { CareerComparison } from '../../models/career-comparison';
+import { CareerProfile } from '../../models/career-profile';
 
 @Component({
   selector: 'app-career-comparison',
@@ -17,6 +18,7 @@ export class CareerComparisonPage implements OnInit {
   );
 
   readonly comparisons = signal<CareerComparison[]>([]);
+  readonly careers = signal<CareerProfile[]>([]);
   readonly isLoading = signal(true);
   readonly errorMessage = signal('');
 
@@ -24,13 +26,75 @@ export class CareerComparisonPage implements OnInit {
   // We'll replace this with the authenticated learner later.
   private readonly learnerId = 1;
 
-  // Temporary selection.
-  // We'll make this selectable from the UI shortly.
-  private readonly careerProfileIds = [2, 3];
+  readonly selectedCareerIds = signal<number[]>([2, 3]);
 
-  ngOnInit(): void {
-    this.loadComparison();
+ngOnInit(): void {
+  this.loadCareers();
+}
+
+isSelected(careerId: number): boolean {
+  return this.selectedCareerIds().includes(careerId);
+}
+
+toggleCareer(careerId: number): void {
+  const selected = this.selectedCareerIds();
+
+  if (selected.includes(careerId)) {
+    this.selectedCareerIds.set(
+      selected.filter(id => id !== careerId)
+    );
+
+    return;
   }
+
+  if (selected.length >= 3) {
+    return;
+  }
+
+  this.selectedCareerIds.set([
+    ...selected,
+    careerId
+  ]);
+}
+
+compareSelected(): void {
+  if (this.selectedCareerIds().length < 2) {
+    this.errorMessage.set(
+      'Select at least two careers to compare.'
+    );
+
+    return;
+  }
+
+  this.loadComparison();
+}
+
+private loadCareers(): void {
+  this.isLoading.set(true);
+  this.errorMessage.set('');
+
+  this.recommendationService
+    .getCareerProfiles()
+    .subscribe({
+      next: (careers) => {
+        this.careers.set(careers);
+        this.loadComparison();
+      },
+
+      error: (error) => {
+        console.error(
+          'Failed to load career profiles:',
+          error
+        );
+
+        this.errorMessage.set(
+          'Unable to load available careers.'
+        );
+
+        this.isLoading.set(false);
+      }
+    });
+}
 
   private loadComparison(): void {
     this.isLoading.set(true);
@@ -39,7 +103,7 @@ export class CareerComparisonPage implements OnInit {
     this.recommendationService
       .getComparison(
         this.learnerId,
-        this.careerProfileIds
+        this.selectedCareerIds()
       )
       .subscribe({
         next: (comparisons) => {

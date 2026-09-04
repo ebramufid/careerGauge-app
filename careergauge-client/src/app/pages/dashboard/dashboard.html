@@ -71,10 +71,15 @@
                 <span>Missing</span>
               </div>
             </div>
+<button
+  type="button"
+  [routerLink]="[
+    '/career-details',
+    career.careerProfileId
+  ]">
+  View Career Details
+</button>
 
-            <button type="button">
-              View Career Details
-            </button>
           </article>
         }
       </div>

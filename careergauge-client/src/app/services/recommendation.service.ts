@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { CareerRecommendation } from '../models/career-recommendation';
+import { ReadinessResult } from '../models/readiness-result';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,15 @@ export class RecommendationService {
   ): Observable<CareerRecommendation[]> {
     return this.http.get<CareerRecommendation[]>(
       `${this.apiUrl}/${learnerId}`
+    );
+  }
+
+  getRecommendationDetails(
+    learnerId: number,
+    careerProfileId: number
+  ): Observable<ReadinessResult> {
+    return this.http.get<ReadinessResult>(
+      `${this.apiUrl}/${learnerId}/career/${careerProfileId}`
     );
   }
 }

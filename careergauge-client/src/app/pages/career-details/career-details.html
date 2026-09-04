@@ -1,0 +1,229 @@
+<div class="career-details">
+
+  @if (isLoading()) {
+    <section class="state-card">
+      <p>Loading career analysis...</p>
+    </section>
+  }
+
+  @if (errorMessage()) {
+    <section class="state-card error">
+      <p>{{ errorMessage() }}</p>
+    </section>
+  }
+
+  @if (!isLoading() && !errorMessage() && result()) {
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">CAREER ANALYSIS</p>
+
+        <h1>{{ result()!.careerName }}</h1>
+
+        <p class="subtitle">
+          See how your current skills compare with the requirements
+          for this career.
+        </p>
+      </div>
+
+      <a routerLink="/dashboard">
+        ← Back to Dashboard
+      </a>
+    </header>
+
+    <section class="summary-card">
+
+      <div class="readiness">
+        <span class="label">Career Readiness</span>
+
+        <strong>
+          {{ result()!.readinessPercentage }}%
+        </strong>
+
+        <div class="progress-track">
+          <div
+            class="progress-bar"
+            [style.width.%]="result()!.readinessPercentage">
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-stats">
+
+        <div>
+          <strong>{{ result()!.requiredSkills }}</strong>
+          <span>Required Skills</span>
+        </div>
+
+        <div>
+          <strong>{{ result()!.metSkills }}</strong>
+          <span>Skills Met</span>
+        </div>
+
+        <div>
+          <strong>{{ result()!.partialSkills }}</strong>
+          <span>Partial</span>
+        </div>
+
+        <div>
+          <strong>{{ result()!.missingSkills }}</strong>
+          <span>Missing</span>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="skills-section">
+
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">SKILL GAP ANALYSIS</p>
+
+          <h2>Your Skills vs Career Requirements</h2>
+
+          <p>
+            Identify the skills you already have and the areas
+            that need improvement.
+          </p>
+        </div>
+      </div>
+
+      <div class="skill-list">
+
+        @for (
+          skill of result()!.skillGaps;
+          track skill.skillId
+        ) {
+
+          <article class="skill-card">
+
+            <div class="skill-main">
+
+              <div>
+                <h3>{{ skill.skillName }}</h3>
+
+                <p>
+                  Current level:
+                  <strong>{{ skill.currentLevel }}</strong>
+                  /
+                  {{ skill.requiredLevel }}
+                </p>
+              </div>
+
+              <span
+                class="status"
+                [class.met]="skill.status === 'Met'"
+                [class.partial]="skill.status === 'Partial'"
+                [class.missing]="skill.status === 'Missing'">
+                {{ skill.status }}
+              </span>
+
+            </div>
+
+            <div class="skill-progress">
+
+              <div class="progress-track">
+                <div
+                  class="progress-bar"
+                  [style.width.%]="
+                    (skill.currentLevel / skill.requiredLevel) * 100
+                  ">
+                </div>
+              </div>
+
+              <span>
+                Gap: {{ skill.gap }}
+              </span>
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+    </section>
+
+    <section class="learning-section">
+
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">YOUR NEXT STEPS</p>
+
+      <h2>Learning Priorities</h2>
+
+      <p>
+        Focus on these skills to improve your readiness for
+        {{ result()!.careerName }}.
+      </p>
+    </div>
+  </div>
+
+  @if (result()!.learningPriorities.length === 0) {
+
+    <div class="state-card">
+      <p>
+        Excellent! You currently meet all the required skills
+        for this career.
+      </p>
+    </div>
+
+  } @else {
+
+    <div class="priority-list">
+
+      @for (
+        priority of result()!.learningPriorities;
+        track priority.skillId
+      ) {
+
+        <article class="priority-card">
+
+          <div class="priority-header">
+
+            <div>
+              <h3>{{ priority.skillName }}</h3>
+
+              <p>
+                Current level:
+                <strong>{{ priority.currentLevel }}</strong>
+
+                →
+
+                Target level:
+                <strong>{{ priority.targetLevel }}</strong>
+              </p>
+            </div>
+
+            <span
+              class="priority-badge"
+              [class.high]="priority.priority === 'High'"
+              [class.medium]="priority.priority === 'Medium'">
+              {{ priority.priority }} Priority
+            </span>
+
+          </div>
+
+          <div class="priority-details">
+
+            <span>
+              {{ priority.status }}
+            </span>
+
+            <span>
+              Skill gap: {{ priority.gap }}
+            </span>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  }
+
+</section>
+  }
+</div>

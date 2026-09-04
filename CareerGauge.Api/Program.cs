@@ -1,3 +1,6 @@
+using Scalar.AspNetCore;
+using CareerGauge.Application.LearnerSkills;
+using CareerGauge.Infrastructure.LearnerSkills;
 using CareerGauge.Application.Recommendations;
 using CareerGauge.Infrastructure.Recommendations;
 using CareerGauge.Infrastructure.Persistence;
@@ -28,6 +31,15 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IRecommendationRepository,
     RecommendationRepository>();
+
+builder.Services.AddScoped<
+    ILearnerSkillRepository,
+    LearnerSkillRepository>();
+
+builder.Services.AddScoped<
+    ILearnerSkillService,
+    LearnerSkillService>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CareerGaugeClient", policy =>
@@ -44,6 +56,15 @@ builder.Services.AddControllers();
 
 
 var app = builder.Build();
+app.MapOpenApi();
+app.MapScalarApiReference();
+
+app.UseHttpsRedirection();
+app.UseCors("CareerGaugeClient");
+
+app.MapControllers();
+
+app.Run();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider
@@ -56,6 +77,8 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();

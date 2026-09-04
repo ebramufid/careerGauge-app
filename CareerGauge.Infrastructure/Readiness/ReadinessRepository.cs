@@ -16,9 +16,10 @@ public class ReadinessRepository : IReadinessRepository
     }
 
     public async Task<Learner?> GetLearnerAsync(
-        int learnerId)
+    int learnerId)
     {
         return await _context.Learners
+            .AsNoTracking()
             .Include(l => l.LearnerSkills)
             .ThenInclude(ls => ls.Skill)
             .FirstOrDefaultAsync(

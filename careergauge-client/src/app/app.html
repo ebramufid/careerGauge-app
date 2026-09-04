@@ -1,1 +1,16 @@
-<router-outlet />
+<header class="app-header">
+  <a class="brand" routerLink="/dashboard">
+    <span class="brand-mark">CG</span>
+    <span>CareerGauge</span>
+  </a>
+
+  <nav>
+    <a routerLink="/dashboard" routerLinkActive="active">
+      Dashboard
+    </a>
+  </nav>
+</header>
+
+<main>
+  <router-outlet />
+</main>

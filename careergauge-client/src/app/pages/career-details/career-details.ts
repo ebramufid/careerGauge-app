@@ -41,7 +41,6 @@ export class CareerDetails implements OnInit {
       )
       .subscribe({
         next: (result) => {
-          console.log('CAREER DETAILS RECEIVED:', result);
 
           this.result.set(result);
           this.isLoading.set(false);

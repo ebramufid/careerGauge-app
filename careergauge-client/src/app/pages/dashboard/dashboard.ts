@@ -36,7 +36,7 @@ export class Dashboard implements OnInit {
       .getRecommendations(this.learnerId)
       .subscribe({
         next: (recommendations) => {
-          console.log('ANGULAR RECEIVED:', recommendations);
+          
 
           this.recommendations.set(recommendations);
           this.isLoading.set(false);

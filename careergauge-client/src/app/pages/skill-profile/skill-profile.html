@@ -1,1 +1,136 @@
-<p>skill-profile works!</p>
+<div class="skill-profile">
+  @if (isLoading()) {
+    <div class="state-card">
+      <p>Loading your skills...</p>
+    </div>
+  }
+
+  @else if (errorMessage() && skills().length === 0) {
+    <div class="state-card error">
+      <p>{{ errorMessage() }}</p>
+    </div>
+  }
+
+  @else {
+    <header class="profile-header">
+      <a
+        class="back-link"
+        routerLink="/dashboard">
+        ← Back to Dashboard
+      </a>
+
+      <p class="eyebrow">SKILL PROFILE</p>
+
+      <h1>Your Skills</h1>
+
+      <p class="subtitle">
+        Tell CareerGauge what you currently know.
+        Your skill levels are used to calculate your
+        career readiness and recommendations.
+      </p>
+    </header>
+
+    <main class="profile-content">
+
+      <section class="skills-section">
+
+        <div class="section-header">
+          <div>
+            <h2>Current proficiency</h2>
+            <p>
+              Select the level that best describes
+              your current ability.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="save-button"
+            [disabled]="isSaving()"
+            (click)="saveSkills()">
+
+            @if (isSaving()) {
+              Saving...
+            } @else {
+              Save Skills
+            }
+
+          </button>
+        </div>
+
+        @if (savedMessage()) {
+          <div class="success-message">
+            {{ savedMessage() }}
+          </div>
+        }
+
+        @if (errorMessage()) {
+          <div class="error-message">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        <div class="skill-list">
+
+          @for (skill of skills(); track skill.skillId) {
+
+            <article class="skill-card">
+
+              <div class="skill-header">
+
+                <div>
+                  <h3>{{ skill.skillName }}</h3>
+
+                  <p>
+                    Current level:
+                    <strong>
+                      {{ getLevelLabel(skill.currentLevel) }}
+                    </strong>
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="level-options">
+
+                <button
+                  type="button"
+                  [class.selected]="skill.currentLevel === 0"
+                  (click)="setLevel(skill.skillId, 0)">
+                  Missing
+                </button>
+
+                <button
+                  type="button"
+                  [class.selected]="skill.currentLevel === 1"
+                  (click)="setLevel(skill.skillId, 1)">
+                  Beginner
+                </button>
+
+                <button
+                  type="button"
+                  [class.selected]="skill.currentLevel === 2"
+                  (click)="setLevel(skill.skillId, 2)">
+                  Intermediate
+                </button>
+
+                <button
+                  type="button"
+                  [class.selected]="skill.currentLevel === 3"
+                  (click)="setLevel(skill.skillId, 3)">
+                  Advanced
+                </button>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    </main>
+  }
+</div>

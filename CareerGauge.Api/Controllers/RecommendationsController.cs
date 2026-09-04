@@ -39,4 +39,19 @@ public class RecommendationsController : ControllerBase
 
         return Ok(result);
     }
+
+
+    [HttpGet("{learnerId}/compare")]
+    public async Task<IActionResult> CompareCareers(
+    int learnerId,
+    [FromQuery] List<int> careerProfileIds)
+    {
+        var comparisons =
+            await _recommendationService
+                .GetComparisonAsync(
+                    learnerId,
+                    careerProfileIds);
+
+        return Ok(comparisons);
+    }
 }

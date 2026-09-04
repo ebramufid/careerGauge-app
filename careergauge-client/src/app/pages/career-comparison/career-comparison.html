@@ -1,0 +1,88 @@
+<div class="comparison-page">
+
+  <a
+    class="back-link"
+    routerLink="/dashboard">
+    ← Back to Dashboard
+  </a>
+
+  <header class="page-header">
+    <p class="eyebrow">CAREER COMPARISON</p>
+
+    <h1>Compare Careers</h1>
+
+    <p class="subtitle">
+      See how your current skills match different
+      career paths.
+    </p>
+  </header>
+
+  @if (isLoading()) {
+    <div class="state-card">
+      <p>Loading career comparison...</p>
+    </div>
+  }
+
+  @else if (errorMessage()) {
+    <div class="state-card error">
+      <p>{{ errorMessage() }}</p>
+    </div>
+  }
+
+  @else {
+    <div class="comparison-grid">
+
+      @for (
+        career of comparisons();
+        track career.careerProfileId
+      ) {
+
+        <article class="career-card">
+
+          <div class="career-card-header">
+            <h2>{{ career.careerName }}</h2>
+
+            <span>
+              {{ career.readinessPercentage }}%
+            </span>
+          </div>
+
+          <div class="progress-track">
+            <div
+              class="progress-bar"
+              [style.width.%]="career.readinessPercentage">
+            </div>
+          </div>
+
+          <div class="stats">
+
+            <div>
+              <strong>{{ career.metSkills }}</strong>
+              <span>Met</span>
+            </div>
+
+            <div>
+              <strong>{{ career.partialSkills }}</strong>
+              <span>Partial</span>
+            </div>
+
+            <div>
+              <strong>{{ career.missingSkills }}</strong>
+              <span>Missing</span>
+            </div>
+
+            <div>
+              <strong>{{ career.skillGapCount }}</strong>
+              <span>Skill gaps</span>
+            </div>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+  }
+
+</div>

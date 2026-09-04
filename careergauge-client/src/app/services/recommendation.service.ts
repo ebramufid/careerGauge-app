@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { CareerRecommendation } from '../models/career-recommendation';
 import { ReadinessResult } from '../models/readiness-result';
+import { CareerComparison } from '../models/career-comparison';
 
 @Injectable({
   providedIn: 'root'
@@ -30,4 +31,17 @@ export class RecommendationService {
       `${this.apiUrl}/${learnerId}/career/${careerProfileId}`
     );
   }
+
+  getComparison(
+  learnerId: number,
+  careerProfileIds: number[]
+): Observable<CareerComparison[]> {
+  const params = careerProfileIds
+    .map(id => `careerProfileIds=${id}`)
+    .join('&');
+
+  return this.http.get<CareerComparison[]>(
+    `${this.apiUrl}/${learnerId}/compare?${params}`
+  );
+}
 }

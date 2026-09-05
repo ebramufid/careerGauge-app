@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 
 import { LearnerSkillService } from '../../services/learner-skill.service';
 import { LearnerSkill } from '../../models/learner-skill';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-skill-profile',
@@ -16,6 +17,8 @@ export class SkillProfile implements OnInit {
     LearnerSkillService
   );
 
+  private readonly authService = inject(AuthService);
+
   readonly skills = signal<LearnerSkill[]>([]);
   readonly isLoading = signal(true);
   readonly isSaving = signal(false);
@@ -23,22 +26,38 @@ export class SkillProfile implements OnInit {
   readonly errorMessage = signal('');
 
   readonly skillSummary = () => {
-  const skills = this.skills();
+    const skills = this.skills();
 
-  return {
-    advanced: skills.filter(s => s.currentLevel === 3).length,
-    intermediate: skills.filter(s => s.currentLevel === 2).length,
-    beginner: skills.filter(s => s.currentLevel === 1).length,
-    missing: skills.filter(s => s.currentLevel === 0).length
+    return {
+      advanced: skills.filter(s => s.currentLevel === 3).length,
+      intermediate: skills.filter(s => s.currentLevel === 2).length,
+      beginner: skills.filter(s => s.currentLevel === 1).length,
+      missing: skills.filter(s => s.currentLevel === 0).length
+    };
   };
-};
 
-  // Temporary demo learner.
-  // We'll replace this with the authenticated learner later.
-  private readonly learnerId = 1;
+  private learnerId = 0;
 
   ngOnInit(): void {
-    this.loadSkills();
+    this.authService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.learnerId = user.learnerId;
+        this.loadSkills();
+      },
+
+      error: (error) => {
+        console.error(
+          'Failed to get current user:',
+          error
+        );
+
+        this.errorMessage.set(
+          'Unable to identify the current learner.'
+        );
+
+        this.isLoading.set(false);
+      }
+    });
   }
 
   private loadSkills(): void {

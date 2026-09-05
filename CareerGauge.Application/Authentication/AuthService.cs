@@ -55,4 +55,11 @@ public class AuthService : IAuthService
             Email = request.Email
         };
     }
+
+    public async Task<CurrentUserResponse?> GetCurrentUserAsync()
+    {
+        // will implement this using the authenticated user's claims
+        // in the next step.
+        return null;
+    }
 }

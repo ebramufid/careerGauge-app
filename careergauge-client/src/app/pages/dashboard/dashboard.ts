@@ -1,3 +1,4 @@
+import { AuthService } from '../../services/auth.service';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -15,6 +16,8 @@ export class Dashboard implements OnInit {
   private readonly recommendationService = inject(
     RecommendationService
   );
+
+  private readonly authService = inject(AuthService);
 
   readonly recommendations = signal<CareerRecommendation[]>([]);
   readonly isLoading = signal(true);
@@ -63,20 +66,31 @@ readonly topCareerName = () => {
 };
 
 
-  // Temporary demo learner.
-  // We'll replace this with the authenticated learner later.
-  private readonly learnerId = 1;
 
-  ngOnInit(): void {
-    this.loadRecommendations();
-  }
 
-  private loadRecommendations(): void {
+ngOnInit(): void {
+  this.authService.getCurrentUser().subscribe({
+    next: (user) => {
+      this.loadRecommendations(user.learnerId);
+    },
+    error: (error) => {
+      console.error('Failed to get current user:', error);
+
+      this.errorMessage.set(
+        'Unable to identify the current learner.'
+      );
+
+      this.isLoading.set(false);
+    }
+  });
+}
+
+  private loadRecommendations(learnerId: number): void {
     this.isLoading.set(true);
     this.errorMessage.set('');
 
-    this.recommendationService
-      .getRecommendations(this.learnerId)
+this.recommendationService
+  .getRecommendations(learnerId)
       .subscribe({
         next: (recommendations) => {
           

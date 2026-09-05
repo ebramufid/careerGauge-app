@@ -13,6 +13,11 @@ export interface LoginResponse {
   email: string;
 }
 
+export interface CurrentUser {
+  learnerId: number;
+  email: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +31,12 @@ login(request: LoginRequest): Observable<LoginResponse> {
     `${this.apiUrl}/login`,
     request,
     { withCredentials: true }
+  );
+}
+
+getCurrentUser(): Observable<CurrentUser> {
+  return this.http.get<CurrentUser>(
+    `${this.apiUrl}/me`
   );
 }
 }

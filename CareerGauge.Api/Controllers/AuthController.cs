@@ -1,6 +1,9 @@
-using CareerGauge.Application.Authentication;
 using CareerGauge.Application.Authentication.DTOs;
+using System.Security.Claims;
+using CareerGauge.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace CareerGauge.Api.Controllers;
 
@@ -46,4 +49,26 @@ public class AuthController : ControllerBase
             email = result.Email
         });
     }
+
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult GetCurrentUser()
+    {
+        var learnerId = User.FindFirstValue("learnerId");
+        var email = User.FindFirstValue(ClaimTypes.Email)
+                    ?? User.FindFirstValue("email");
+
+        if (learnerId is null || email is null)
+        {
+            return Unauthorized();
+        }
+
+        return Ok(new CurrentUserResponse
+        {
+            LearnerId = int.Parse(learnerId),
+            Email = email
+        });
+    }
+
+
 }

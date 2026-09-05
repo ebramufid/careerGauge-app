@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { RecommendationService } from '../../services/recommendation.service';
 import { ReadinessResult } from '../../models/readiness-result';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-career-details',
@@ -17,6 +18,7 @@ export class CareerDetails implements OnInit {
   );
 
   private readonly route = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
 
   readonly result = signal<ReadinessResult | null>(null);
   readonly isLoading = signal(true);
@@ -36,23 +38,42 @@ export class CareerDetails implements OnInit {
   }
 };
 
-  // Temporary demo learner.
-  private readonly learnerId = 1;
+
 
   ngOnInit(): void {
-    const careerProfileId = Number(
-      this.route.snapshot.paramMap.get('careerProfileId')
-    );
+  const careerProfileId = Number(
+    this.route.snapshot.paramMap.get('careerProfileId')
+  );
 
-    this.loadDetails(careerProfileId);
-  }
+  this.authService.getCurrentUser().subscribe({
+    next: (user) => {
+      this.loadDetails(user.learnerId, careerProfileId);
+    },
+
+    error: (error) => {
+      console.error(
+        'Failed to get current user:',
+        error
+      );
+
+      this.errorMessage.set(
+        'Unable to identify the current learner.'
+      );
+
+      this.isLoading.set(false);
+    }
+  });
+}
 
   
 
-  private loadDetails(careerProfileId: number): void {
+  private loadDetails(
+  learnerId: number,
+  careerProfileId: number
+): void {
     this.recommendationService
       .getRecommendationDetails(
-        this.learnerId,
+        learnerId,
         careerProfileId
       )
       .subscribe({

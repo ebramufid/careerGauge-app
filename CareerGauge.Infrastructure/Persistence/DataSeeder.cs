@@ -1,10 +1,64 @@
 using CareerGauge.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using CareerGauge.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CareerGauge.Infrastructure.Persistence;
 
 public static class DataSeeder
 {
+    public static async Task SeedIdentityUserAsync(
+    IServiceProvider services)
+    {
+        var userManager = services.GetRequiredService<
+            UserManager<CareerGaugeUser>>();
+
+        var dbContext = services.GetRequiredService<
+            CareerGaugeDbContext>();
+
+        var existingUser = await userManager.FindByEmailAsync(
+            "demo@careergauge.local");
+
+        if (existingUser is not null)
+        {
+            return;
+        }
+
+        var learner = await dbContext.Learners
+            .SingleOrDefaultAsync(
+                l => l.Email == "demo@careergauge.local");
+
+        if (learner is null)
+        {
+            throw new InvalidOperationException(
+                "Demo learner was not found before creating the Identity user.");
+        }
+
+        var user = new CareerGaugeUser
+        {
+            UserName = "demo@careergauge.local",
+            Email = "demo@careergauge.local",
+            EmailConfirmed = true,
+            LearnerId = learner.Id
+        };
+
+        var result = await userManager.CreateAsync(
+            user,
+            "Demo123!");
+
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(
+                ", ",
+                result.Errors.Select(e => e.Description));
+
+            throw new InvalidOperationException(
+                $"Failed to create demo Identity user: {errors}");
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////
     public static async Task SeedAsync(CareerGaugeDbContext context)
     {
         await context.Database.MigrateAsync();

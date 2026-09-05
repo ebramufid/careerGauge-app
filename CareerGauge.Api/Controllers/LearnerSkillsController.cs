@@ -1,11 +1,15 @@
+using Microsoft.AspNetCore.Authorization;
 using CareerGauge.Application.LearnerSkills;
 using CareerGauge.Application.LearnerSkills.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CareerGauge.Api.Controllers;
 
+
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
+
 public class LearnerSkillsController : ControllerBase
 {
     private readonly ILearnerSkillService _learnerSkillService;

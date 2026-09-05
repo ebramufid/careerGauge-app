@@ -1,10 +1,12 @@
 using CareerGauge.Application.Recommendations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CareerGauge.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class RecommendationsController : ControllerBase
 {
     private readonly IRecommendationService _recommendationService;

@@ -21,6 +21,20 @@ export class CareerDetails implements OnInit {
   readonly result = signal<ReadinessResult | null>(null);
   readonly isLoading = signal(true);
   readonly errorMessage = signal('');
+  readonly getLevelLabel = (level: number) => {
+  switch (level) {
+    case 0:
+      return 'Missing';
+    case 1:
+      return 'Beginner';
+    case 2:
+      return 'Intermediate';
+    case 3:
+      return 'Advanced';
+    default:
+      return 'Unknown';
+  }
+};
 
   // Temporary demo learner.
   private readonly learnerId = 1;
@@ -32,6 +46,8 @@ export class CareerDetails implements OnInit {
 
     this.loadDetails(careerProfileId);
   }
+
+  
 
   private loadDetails(careerProfileId: number): void {
     this.recommendationService

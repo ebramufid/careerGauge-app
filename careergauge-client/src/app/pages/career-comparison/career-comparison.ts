@@ -57,6 +57,14 @@ toggleCareer(careerId: number): void {
   ]);
 }
 
+readonly readinessLabel = (percentage: number): string => {
+  if (percentage >= 70) return 'Strong match';
+  if (percentage >= 60) return 'Good match';
+  if (percentage >= 50) return 'Developing';
+  if (percentage >= 40) return 'Needs development';
+  return 'Early stage';
+};
+
 compareSelected(): void {
   if (this.selectedCareerIds().length < 2) {
     this.errorMessage.set(

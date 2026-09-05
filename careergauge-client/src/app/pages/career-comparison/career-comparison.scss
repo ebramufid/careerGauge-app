@@ -282,9 +282,29 @@ h1 {
     color: #111827;
     font-size: 28px;
   }
+
+  .readiness {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
 }
 
-  /////////////////////////////////////////////////////////////////////  
+.readiness strong {
+  color: #4f46e5;
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.readiness span {
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+}
 @media (max-width: 900px) {
   .career-options {
     grid-template-columns: repeat(2, 1fr);

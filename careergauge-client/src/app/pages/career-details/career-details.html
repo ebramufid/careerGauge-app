@@ -39,6 +39,20 @@
           {{ result()!.readinessPercentage }}%
         </strong>
 
+        <span class="readiness-label">
+  @if (result()!.readinessPercentage >= 70) {
+    Strong match
+  } @else if (result()!.readinessPercentage >= 60) {
+    Good match
+  } @else if (result()!.readinessPercentage >= 50) {
+    Developing
+  } @else if (result()!.readinessPercentage >= 40) {
+    Needs development
+  } @else {
+    Early stage
+  }
+</span>
+
         <div class="progress-track">
           <div
             class="progress-bar"
@@ -184,15 +198,15 @@
             <div>
               <h3>{{ priority.skillName }}</h3>
 
-              <p>
-                Current level:
-                <strong>{{ priority.currentLevel }}</strong>
+<p>
+  Current level:
+  <strong>{{ getLevelLabel(priority.currentLevel) }}</strong>
 
-                →
+  →
 
-                Target level:
-                <strong>{{ priority.targetLevel }}</strong>
-              </p>
+  Target level:
+  <strong>{{ getLevelLabel(priority.targetLevel) }}</strong>
+</p>
             </div>
 
             <span

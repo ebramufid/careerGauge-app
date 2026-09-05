@@ -42,9 +42,10 @@
           </p>
         </div>
 
-        <span class="selection-count">
-          {{ selectedCareerIds().length }} / 3 selected
-        </span>
+<span class="selection-count">
+  {{ selectedCareerIds().length }} selected
+  · Choose 2–3
+</span>
       </div>
 
       <div class="career-options">
@@ -123,15 +124,21 @@
 
               <div class="career-card-header">
 
-                <h3>
-                  {{ career.careerName }}
-                </h3>
+  <h3>
+    {{ career.careerName }}
+  </h3>
 
-                <span>
-                  {{ career.readinessPercentage }}%
-                </span>
+  <div class="readiness">
+    <strong>
+      {{ career.readinessPercentage }}%
+    </strong>
 
-              </div>
+    <span>
+      {{ readinessLabel(career.readinessPercentage) }}
+    </span>
+  </div>
+
+</div>
 
               <div class="progress-track">
                 <div

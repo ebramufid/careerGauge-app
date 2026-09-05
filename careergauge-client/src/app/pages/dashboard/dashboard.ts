@@ -19,6 +19,49 @@ export class Dashboard implements OnInit {
   readonly recommendations = signal<CareerRecommendation[]>([]);
   readonly isLoading = signal(true);
   readonly errorMessage = signal('');
+  readonly readinessLabel = (percentage: number) => {
+  if (percentage >= 70) return 'Strong match';
+  if (percentage >= 60) return 'Good match';
+  if (percentage >= 50) return 'Developing';
+  if (percentage >= 40) return 'Needs development';
+  return 'Early stage';
+};
+
+  readonly topReadiness = () => {
+  const recommendations = this.recommendations();
+
+  if (recommendations.length === 0) {
+    return 0;
+  }
+
+  return recommendations[0].readinessPercentage;
+};
+
+readonly averageReadiness = () => {
+  const recommendations = this.recommendations();
+
+  if (recommendations.length === 0) {
+    return 0;
+  }
+
+  const total = recommendations.reduce(
+    (sum, career) => sum + career.readinessPercentage,
+    0
+  );
+
+  return Math.round((total / recommendations.length) * 100) / 100;
+};
+
+readonly topCareerName = () => {
+  const recommendations = this.recommendations();
+
+  if (recommendations.length === 0) {
+    return '—';
+  }
+
+  return recommendations[0].careerName;
+};
+
 
   // Temporary demo learner.
   // We'll replace this with the authenticated learner later.

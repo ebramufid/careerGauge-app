@@ -253,4 +253,46 @@ h1 {
   .skill-card {
     padding: 18px;
   }
+
+  .skill-summary {
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.skill-summary > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 105px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+}
+
+.skill-summary strong {
+  color: #111827;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.skill-summary span {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+@media (max-width: 640px) {
+  .skill-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 }

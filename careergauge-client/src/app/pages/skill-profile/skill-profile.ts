@@ -22,6 +22,17 @@ export class SkillProfile implements OnInit {
   readonly savedMessage = signal('');
   readonly errorMessage = signal('');
 
+  readonly skillSummary = () => {
+  const skills = this.skills();
+
+  return {
+    advanced: skills.filter(s => s.currentLevel === 3).length,
+    intermediate: skills.filter(s => s.currentLevel === 2).length,
+    beginner: skills.filter(s => s.currentLevel === 1).length,
+    missing: skills.filter(s => s.currentLevel === 0).length
+  };
+};
+
   // Temporary demo learner.
   // We'll replace this with the authenticated learner later.
   private readonly learnerId = 1;

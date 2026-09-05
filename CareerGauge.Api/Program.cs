@@ -1,45 +1,31 @@
-using Scalar.AspNetCore;
 using CareerGauge.Application.LearnerSkills;
-using CareerGauge.Infrastructure.LearnerSkills;
-using CareerGauge.Application.Recommendations;
-using CareerGauge.Infrastructure.Recommendations;
-using CareerGauge.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 using CareerGauge.Application.Readiness;
+using CareerGauge.Application.Recommendations;
+using CareerGauge.Infrastructure.LearnerSkills;
+using CareerGauge.Infrastructure.Persistence;
 using CareerGauge.Infrastructure.Readiness;
-
+using CareerGauge.Infrastructure.Recommendations;
+using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// Database
 builder.Services.AddDbContext<CareerGaugeDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("CareerGaugeDatabase")));
 
+// Application services
 builder.Services.AddScoped<IReadinessService, ReadinessService>();
+builder.Services.AddScoped<IReadinessRepository, ReadinessRepository>();
 
-builder.Services.AddScoped<
-    IReadinessRepository,
-    ReadinessRepository>();
+builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+builder.Services.AddScoped<IRecommendationRepository, RecommendationRepository>();
 
-builder.Services.AddScoped<
-    IRecommendationService,
-    RecommendationService>();
+builder.Services.AddScoped<ILearnerSkillRepository, LearnerSkillRepository>();
+builder.Services.AddScoped<ILearnerSkillService, LearnerSkillService>();
 
-builder.Services.AddScoped<
-    IRecommendationRepository,
-    RecommendationRepository>();
-
-builder.Services.AddScoped<
-    ILearnerSkillRepository,
-    LearnerSkillRepository>();
-
-builder.Services.AddScoped<
-    ILearnerSkillService,
-    LearnerSkillService>();
-
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CareerGaugeClient", policy =>
@@ -51,20 +37,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Controllers and OpenAPI
 builder.Services.AddControllers();
-
-
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
-app.MapOpenApi();
-app.MapScalarApiReference();
 
-app.UseHttpsRedirection();
-app.UseCors("CareerGaugeClient");
-
-app.MapControllers();
-
-app.Run();
+// Seed development data
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider
@@ -73,40 +52,17 @@ using (var scope = app.Services.CreateScope())
     await DataSeeder.SeedAsync(context);
 }
 
-// Configure the HTTP request pipeline.
+// HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-
     app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
+
 app.UseCors("CareerGaugeClient");
+
 app.MapControllers();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

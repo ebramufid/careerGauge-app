@@ -9,6 +9,71 @@
     </div>
   </header>
 
+  <section class="readiness-overview">
+  <div class="overview-header">
+    <div>
+      <p class="eyebrow">READINESS OVERVIEW</p>
+      <h2>Your Career Readiness</h2>
+      <p>
+        A snapshot of how your current skills align with the career paths
+        we evaluated.
+      </p>
+    </div>
+  </div>
+
+  @if (recommendations().length > 0) {
+    <div class="overview-grid">
+      <div class="overview-card featured">
+        <span class="overview-label">Top Readiness</span>
+        <strong>{{ topReadiness() }}%</strong>
+        <span class="overview-description">
+          Your strongest career match
+        </span>
+      </div>
+
+      <div class="overview-card">
+        <span class="overview-label">Careers Evaluated</span>
+        <strong>{{ recommendations().length }}</strong>
+        <span class="overview-description">
+          Career paths in your profile
+        </span>
+      </div>
+
+      <div class="overview-card">
+        <span class="overview-label">Average Readiness</span>
+        <strong>{{ averageReadiness() }}%</strong>
+        <span class="overview-description">
+          Across evaluated careers
+        </span>
+      </div>
+
+      <div class="overview-card">
+        <span class="overview-label">Top Career</span>
+        <strong class="career-name">{{ topCareerName() }}</strong>
+        <span class="overview-description">
+          Your highest readiness match
+        </span>
+      </div>
+    </div>
+  }
+</section>
+
+  <section class="quick-actions">
+  <a routerLink="/skills" class="quick-action">
+    <span class="quick-action-title">My Skills</span>
+    <span class="quick-action-text">
+      Review and update your current skill levels.
+    </span>
+  </a>
+
+  <a routerLink="/career-comparison" class="quick-action">
+    <span class="quick-action-title">Compare Careers</span>
+    <span class="quick-action-text">
+      Compare two or three career paths side by side.
+    </span>
+  </a>
+</section>
+
   @if (isLoading()) {
     <section class="state-card">
       <p>Loading your career recommendations...</p>
@@ -34,7 +99,15 @@
 
       <div class="career-grid">
         @for (career of recommendations(); track career.careerProfileId) {
-          <article class="career-card">
+  <article
+    class="career-card"
+    [class.top-match]="$first">
+
+    @if ($first) {
+      <span class="top-match-badge">
+        TOP MATCH
+      </span>
+    }
             <div class="card-header">
               <div>
                 <h3>{{ career.careerName }}</h3>
@@ -43,9 +116,10 @@
                 </span>
               </div>
 
-              <div class="score">
-                {{ career.readinessPercentage }}%
-              </div>
+<div class="score">
+  <strong>{{ career.readinessPercentage }}%</strong>
+  <span>{{ readinessLabel(career.readinessPercentage) }}</span>
+</div>
             </div>
 
             <div class="progress-track">

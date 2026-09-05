@@ -36,6 +36,15 @@ builder.Services
     .AddJwtBearer(options =>
     {
         var jwtSettings = builder.Configuration.GetSection("Jwt");
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                context.Token = context.Request.Cookies["accessToken"];
+
+                return Task.CompletedTask;
+            }
+        };
 
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -74,12 +83,13 @@ builder.Services.AddScoped<ILearnerSkillService, LearnerSkillService>();
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CareerGaugeClient", policy =>
+    options.AddPolicy("AllowAngular", policy =>
     {
         policy
             .WithOrigins("http://localhost:4201")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -111,7 +121,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("CareerGaugeClient");
+app.UseCors("AllowAngular");
 
 app.UseAuthentication();
 app.UseAuthorization();

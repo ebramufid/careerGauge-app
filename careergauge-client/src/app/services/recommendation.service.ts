@@ -20,18 +20,20 @@ export class RecommendationService {
   getRecommendations(
     learnerId: number
   ): Observable<CareerRecommendation[]> {
-    return this.http.get<CareerRecommendation[]>(
-      `${this.apiUrl}/${learnerId}`
-    );
+return this.http.get<CareerRecommendation[]>(
+  `${this.apiUrl}/${learnerId}`
+  
+);
   }
 
   getRecommendationDetails(
     learnerId: number,
     careerProfileId: number
   ): Observable<ReadinessResult> {
-    return this.http.get<ReadinessResult>(
-      `${this.apiUrl}/${learnerId}/career/${careerProfileId}`
-    );
+return this.http.get<ReadinessResult>(
+  `${this.apiUrl}/${learnerId}/career/${careerProfileId}`
+  
+);
   }
 
   getComparison(
@@ -42,15 +44,17 @@ export class RecommendationService {
     .map(id => `careerProfileIds=${id}`)
     .join('&');
 
-  return this.http.get<CareerComparison[]>(
-    `${this.apiUrl}/${learnerId}/compare?${params}`
-  );
+return this.http.get<CareerComparison[]>(
+  `${this.apiUrl}/${learnerId}/compare?${params}`
+  
+);
 }
 
 getCareerProfiles(): Observable<CareerProfile[]> {
-  return this.http.get<CareerProfile[]>(
-    `${this.apiUrl}/careers`
-  );
+return this.http.get<CareerProfile[]>(
+  `${this.apiUrl}/careers`
+  
+);
 }
 
 }

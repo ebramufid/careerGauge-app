@@ -21,10 +21,11 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(request: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(
-      `${this.apiUrl}/login`,
-      request
-    );
-  }
+login(request: LoginRequest): Observable<LoginResponse> {
+  return this.http.post<LoginResponse>(
+    `${this.apiUrl}/login`,
+    request,
+    { withCredentials: true }
+  );
+}
 }

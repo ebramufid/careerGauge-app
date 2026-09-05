@@ -29,6 +29,21 @@ public class AuthController : ControllerBase
             });
         }
 
-        return Ok(result);
+        Response.Cookies.Append(
+    "accessToken",
+    result.AccessToken,
+    new CookieOptions
+    {
+        HttpOnly = true,
+        Secure = false,
+        SameSite = SameSiteMode.Lax,
+        Expires = DateTimeOffset.UtcNow.AddHours(1)
+    });
+
+        return Ok(new
+        {
+            learnerId = result.LearnerId,
+            email = result.Email
+        });
     }
 }

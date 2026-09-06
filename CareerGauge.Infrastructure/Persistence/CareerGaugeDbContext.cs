@@ -12,11 +12,21 @@ public class CareerGaugeDbContext : DbContext
     }
 
     public DbSet<Learner> Learners => Set<Learner>();
+
     public DbSet<Skill> Skills => Set<Skill>();
+
     public DbSet<LearnerSkill> LearnerSkills => Set<LearnerSkill>();
+
     public DbSet<CareerProfile> CareerProfiles => Set<CareerProfile>();
+
     public DbSet<CareerSkillRequirement> CareerSkillRequirements =>
         Set<CareerSkillRequirement>();
+
+    public DbSet<AssessmentQuestion> AssessmentQuestions =>
+        Set<AssessmentQuestion>();
+
+    public DbSet<AssessmentAttempt> AssessmentAttempts =>
+        Set<AssessmentAttempt>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

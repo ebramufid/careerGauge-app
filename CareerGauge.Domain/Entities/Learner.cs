@@ -9,4 +9,6 @@ public class Learner
     public string? Email { get; set; }
 
     public ICollection<LearnerSkill> LearnerSkills { get; set; } = [];
+
+    public ICollection<AssessmentAttempt> AssessmentAttempts { get; set; } = [];
 }

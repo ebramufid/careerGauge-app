@@ -11,4 +11,8 @@ public class Skill
     public ICollection<LearnerSkill> LearnerSkills { get; set; } = [];
 
     public ICollection<CareerSkillRequirement> CareerSkillRequirements { get; set; } = [];
+
+    public ICollection<AssessmentQuestion> AssessmentQuestions { get; set; } = [];
+
+    public ICollection<AssessmentAttempt> AssessmentAttempts { get; set; } = [];
 }

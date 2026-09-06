@@ -64,6 +64,7 @@ public static class DataSeeder
         await context.Database.MigrateAsync();
 
         await SeedSkillsAsync(context);
+        await SeedAssessmentQuestionsAsync(context);
         await SeedCareersAsync(context);
         await SeedLearnersAsync(context);
     }
@@ -169,6 +170,98 @@ public static class DataSeeder
         };
 
         await context.Skills.AddRangeAsync(skills);
+        await context.SaveChangesAsync();
+    }
+
+    private static async Task SeedAssessmentQuestionsAsync(
+    CareerGaugeDbContext context)
+    {
+        var csharpSkill = await context.Skills
+            .FirstOrDefaultAsync(s => s.Name == "C#");
+
+        if (csharpSkill is null)
+        {
+            return;
+        }
+
+        var questionsAlreadyExist = await context.AssessmentQuestions
+            .AnyAsync(q => q.SkillId == csharpSkill.Id);
+
+        if (questionsAlreadyExist)
+        {
+            return;
+        }
+
+        var questions = new List<AssessmentQuestion>
+    {
+        new()
+        {
+            SkillId = csharpSkill.Id,
+            QuestionText =
+                "Which keyword is used to create a new instance of a class in C#?",
+            OptionA = "class",
+            OptionB = "new",
+            OptionC = "create",
+            OptionD = "instance",
+            CorrectAnswer = "B",
+            Difficulty = 1
+        },
+
+        new()
+        {
+            SkillId = csharpSkill.Id,
+            QuestionText =
+                "What is the output of: int x = 5; Console.WriteLine(x++);",
+            OptionA = "4",
+            OptionB = "5",
+            OptionC = "6",
+            OptionD = "Compilation error",
+            CorrectAnswer = "B",
+            Difficulty = 1
+        },
+
+        new()
+        {
+            SkillId = csharpSkill.Id,
+            QuestionText =
+                "Which C# type is used to represent a value that can be either true or false?",
+            OptionA = "bool",
+            OptionB = "int",
+            OptionC = "string",
+            OptionD = "double",
+            CorrectAnswer = "A",
+            Difficulty = 1
+        },
+
+        new()
+        {
+            SkillId = csharpSkill.Id,
+            QuestionText =
+                "Which feature allows a C# class to provide multiple implementations of a method with the same name but different parameters?",
+            OptionA = "Inheritance",
+            OptionB = "Encapsulation",
+            OptionC = "Method overloading",
+            OptionD = "Abstraction",
+            CorrectAnswer = "C",
+            Difficulty = 2
+        },
+
+        new()
+        {
+            SkillId = csharpSkill.Id,
+            QuestionText =
+                "What does the async keyword primarily enable in a C# method?",
+            OptionA = "The method can execute asynchronous operations using await",
+            OptionB = "The method always runs on a new thread",
+            OptionC = "The method cannot return a value",
+            OptionD = "The method becomes static",
+            CorrectAnswer = "A",
+            Difficulty = 2
+        }
+    };
+
+        await context.AssessmentQuestions.AddRangeAsync(questions);
+
         await context.SaveChangesAsync();
     }
 

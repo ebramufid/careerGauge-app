@@ -66,4 +66,33 @@ public class AssessmentController : ControllerBase
 
         return Ok(result);
     }
+
+
+    [HttpGet("history/{skillId:int}")]
+    public async Task<IActionResult> GetLatestResult(int skillId)
+    {
+        var learnerIdClaim = User.FindFirstValue("learnerId");
+
+        if (learnerIdClaim is null ||
+            !int.TryParse(learnerIdClaim, out var learnerId))
+        {
+            return Unauthorized(new
+            {
+                message = "Authenticated learner could not be identified."
+            });
+        }
+
+        var result = await _assessmentService
+            .GetLatestResultAsync(learnerId, skillId);
+
+        if (result is null)
+        {
+            return NotFound(new
+            {
+                message = "No assessment has been completed for this skill."
+            });
+        }
+
+        return Ok(result);
+    }
 }

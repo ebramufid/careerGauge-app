@@ -327,9 +327,47 @@ h1 {
 
   .skill-card {
     padding: 18px;
+    
   }
 
   .skill-summary {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .assessment-action,
+.assessment-status {
+  display: block;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.assessment-status {
+  text-align: left;
+}
+
+.assessment-status-title {
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: #166534;
+}
+
+.assessment-status-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  margin-bottom: 1rem;
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+.assessment-status-details strong {
+  color: #111827;
+}
+
+.assessment-button {
+  display: inline-block;
+  width: fit-content;
+}
 }

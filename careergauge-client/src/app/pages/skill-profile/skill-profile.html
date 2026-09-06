@@ -146,14 +146,40 @@
               </div>
 
               @if (hasAssessment(skill.skillName)) {
-                <div class="assessment-action">
-                  <a
-                    class="assessment-button"
-                    [routerLink]="['/assessment', skill.skillId]">
-                    Take C# Assessment
-                  </a>
-                </div>
-              }
+  @if (getAssessmentResult(skill.skillId); as result) {
+    <div class="assessment-status">
+      <div class="assessment-status-title">
+        ✓ Assessment Completed
+      </div>
+
+      <div class="assessment-status-details">
+        <span>
+          Last score:
+          <strong>{{ result.percentage }}%</strong>
+        </span>
+
+        <span>
+          Level:
+          <strong>{{ result.levelName }}</strong>
+        </span>
+      </div>
+
+      <a
+        class="assessment-button"
+        [routerLink]="['/assessment', skill.skillId]">
+        Retake Assessment
+      </a>
+    </div>
+  } @else {
+    <div class="assessment-action">
+      <a
+        class="assessment-button"
+        [routerLink]="['/assessment', skill.skillId]">
+        Take C# Assessment
+      </a>
+    </div>
+  }
+}
 
             </article>
 

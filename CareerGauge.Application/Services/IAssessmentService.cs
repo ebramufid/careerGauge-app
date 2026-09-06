@@ -10,4 +10,8 @@ public interface IAssessmentService
     Task<AssessmentResultDto?> SubmitAssessmentAsync(
         int learnerId,
         SubmitAssessmentRequest request);
+
+    Task<AssessmentResultDto?> GetLatestResultAsync(
+        int learnerId,
+        int skillId);
 }

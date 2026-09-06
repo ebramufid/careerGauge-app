@@ -164,4 +164,45 @@ public class AssessmentService : IAssessmentService
             _ => "Unknown"
         };
     }
+
+    public async Task<AssessmentResultDto?> GetLatestResultAsync(
+    int learnerId,
+    int skillId)
+    {
+        var attempt = await _context.AssessmentAttempts
+            .Where(a =>
+                a.LearnerId == learnerId &&
+                a.SkillId == skillId)
+            .OrderByDescending(a => a.CompletedAt)
+            .FirstOrDefaultAsync();
+
+        if (attempt is null)
+        {
+            return null;
+        }
+
+        var totalQuestions = await _context.AssessmentQuestions
+            .CountAsync(q => q.SkillId == skillId);
+
+        var levelName = attempt.ResultLevel switch
+        {
+            1 => "Beginner",
+            2 => "Intermediate",
+            3 => "Advanced",
+            _ => "Unknown"
+        };
+
+        return new AssessmentResultDto
+        {
+            SkillId = attempt.SkillId,
+            Score = attempt.Score,
+            TotalQuestions = totalQuestions,
+            Percentage = totalQuestions == 0
+        ? 0
+        : (int)Math.Round(
+            (double)attempt.Score / totalQuestions * 100),
+            ResultLevel = attempt.ResultLevel,
+            LevelName = levelName
+        };
+    }
 }

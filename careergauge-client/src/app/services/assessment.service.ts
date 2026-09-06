@@ -31,4 +31,12 @@ export class AssessmentService {
       request
     );
   }
+
+  getLatestResult(
+    skillId: number
+  ): Observable<AssessmentResult> {
+    return this.http.get<AssessmentResult>(
+      `${this.apiUrl}/history/${skillId}`
+    );
+  }
 }

@@ -5,6 +5,10 @@ import { RouterLink } from '@angular/router';
 import { LearnerSkillService } from '../../services/learner-skill.service';
 import { LearnerSkill } from '../../models/learner-skill';
 import { AuthService } from '../../services/auth.service';
+import {
+  AssessmentResult
+} from '../../models/assessment.model';
+import { AssessmentService } from '../../services/assessment.service';
 
 @Component({
   selector: 'app-skill-profile',
@@ -19,24 +23,42 @@ export class SkillProfile implements OnInit {
 
   private readonly authService = inject(AuthService);
 
+  private readonly assessmentService = inject(
+    AssessmentService
+  );
+
   readonly skills = signal<LearnerSkill[]>([]);
   readonly isLoading = signal(true);
   readonly isSaving = signal(false);
   readonly savedMessage = signal('');
   readonly errorMessage = signal('');
 
+  readonly assessmentResults =
+    signal<Record<number, AssessmentResult>>({});
+
+  private learnerId = 0;
+
   readonly skillSummary = () => {
     const skills = this.skills();
 
     return {
-      advanced: skills.filter(s => s.currentLevel === 3).length,
-      intermediate: skills.filter(s => s.currentLevel === 2).length,
-      beginner: skills.filter(s => s.currentLevel === 1).length,
-      missing: skills.filter(s => s.currentLevel === 0).length
+      advanced: skills.filter(
+        s => s.currentLevel === 3
+      ).length,
+
+      intermediate: skills.filter(
+        s => s.currentLevel === 2
+      ).length,
+
+      beginner: skills.filter(
+        s => s.currentLevel === 1
+      ).length,
+
+      missing: skills.filter(
+        s => s.currentLevel === 0
+      ).length
     };
   };
-
-  private learnerId = 0;
 
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe({
@@ -70,6 +92,8 @@ export class SkillProfile implements OnInit {
         next: (skills) => {
           this.skills.set(skills);
           this.isLoading.set(false);
+
+          this.loadAssessmentResults(skills);
         },
 
         error: (error) => {
@@ -87,11 +111,50 @@ export class SkillProfile implements OnInit {
       });
   }
 
-  setLevel(skillId: number, level: number): void {
+  private loadAssessmentResults(
+    skills: LearnerSkill[]
+  ): void {
+    const cSharpSkill = skills.find(
+      skill =>
+        skill.skillName.trim().toLowerCase() === 'c#'
+    );
+
+    if (!cSharpSkill) {
+      return;
+    }
+
+    this.assessmentService
+      .getLatestResult(cSharpSkill.skillId)
+      .subscribe({
+        next: (result) => {
+          this.assessmentResults.update(results => ({
+            ...results,
+            [cSharpSkill.skillId]: result
+          }));
+        },
+
+        error: (error) => {
+          if (error.status !== 404) {
+            console.error(
+              'Failed to load assessment result:',
+              error
+            );
+          }
+        }
+      });
+  }
+
+  setLevel(
+    skillId: number,
+    level: number
+  ): void {
     this.skills.update(skills =>
       skills.map(skill =>
         skill.skillId === skillId
-          ? { ...skill, currentLevel: level }
+          ? {
+              ...skill,
+              currentLevel: level
+            }
           : skill
       )
     );
@@ -119,6 +182,7 @@ export class SkillProfile implements OnInit {
         next: (skills) => {
           this.skills.set(skills);
           this.isSaving.set(false);
+
           this.savedMessage.set(
             'Your skills have been saved successfully.'
           );
@@ -131,6 +195,7 @@ export class SkillProfile implements OnInit {
           );
 
           this.isSaving.set(false);
+
           this.errorMessage.set(
             'Unable to save your skills. Please try again.'
           );
@@ -138,7 +203,23 @@ export class SkillProfile implements OnInit {
       });
   }
 
-  getLevelLabel(level: number): string {
+  hasAssessment(
+    skillName: string
+  ): boolean {
+    return skillName
+      .trim()
+      .toLowerCase() === 'c#';
+  }
+
+  getAssessmentResult(
+    skillId: number
+  ): AssessmentResult | undefined {
+    return this.assessmentResults()[skillId];
+  }
+
+  getLevelLabel(
+    level: number
+  ): string {
     switch (level) {
       case 1:
         return 'Beginner';
@@ -152,9 +233,5 @@ export class SkillProfile implements OnInit {
       default:
         return 'Missing';
     }
-  }
-
-  hasAssessment(skillName: string): boolean {
-    return skillName.trim().toLowerCase() === 'c#';
   }
 }

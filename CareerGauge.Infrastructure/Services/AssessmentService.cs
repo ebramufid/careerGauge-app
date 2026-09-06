@@ -1,5 +1,6 @@
 using CareerGauge.Application.DTOs;
 using CareerGauge.Application.Services;
+using CareerGauge.Domain.Entities;
 using CareerGauge.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -104,12 +105,22 @@ public class AssessmentService : IAssessmentService
 
         if (learnerSkill is null)
         {
-            return null;
+            learnerSkill = new LearnerSkill
+            {
+                LearnerId = learnerId,
+                SkillId = request.SkillId,
+                CurrentLevel = resultLevel
+            };
+
+            await _context.LearnerSkills.AddAsync(
+                learnerSkill);
+        }
+        else
+        {
+            learnerSkill.CurrentLevel = resultLevel;
         }
 
-        learnerSkill.CurrentLevel = resultLevel;
-
-        var attempt = new Domain.Entities.AssessmentAttempt
+        var attempt = new AssessmentAttempt
         {
             LearnerId = learnerId,
             SkillId = request.SkillId,

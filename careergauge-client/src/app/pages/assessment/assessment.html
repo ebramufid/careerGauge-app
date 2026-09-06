@@ -1,0 +1,324 @@
+<div class="assessment-page">
+
+  @if (isLoading()) {
+    <section class="state-card">
+      <div class="spinner"></div>
+
+      <h2>Loading assessment...</h2>
+
+      <p>
+        Preparing your skill assessment questions.
+      </p>
+    </section>
+  }
+
+  @if (errorMessage() && !isLoading()) {
+    <section class="state-card error">
+      <h2>Assessment unavailable</h2>
+
+      <p>
+        {{ errorMessage() }}
+      </p>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="goToSkills()">
+        Back to My Skills
+      </button>
+    </section>
+  }
+
+  @if (
+    !isLoading() &&
+    !errorMessage() &&
+    !result() &&
+    questions().length > 0
+  ) {
+    <header class="assessment-header">
+
+      <div>
+        <p class="eyebrow">
+          SKILL ASSESSMENT
+        </p>
+
+        <h1>
+          Test Your Knowledge
+        </h1>
+
+        <p class="subtitle">
+          Answer each question to measure your current skill level.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="goToSkills()">
+        Back to My Skills
+      </button>
+
+    </header>
+
+    <section class="assessment-card">
+
+      <div class="progress-header">
+        <div>
+          <span class="question-number">
+            Question
+            {{ currentQuestionIndex() + 1 }}
+            of
+            {{ questions().length }}
+          </span>
+        </div>
+
+        <strong>
+          {{ progressPercentage() }}%
+        </strong>
+      </div>
+
+      <div class="progress-track">
+        <div
+          class="progress-bar"
+          [style.width.%]="progressPercentage()">
+        </div>
+      </div>
+
+      @if (currentQuestion(); as question) {
+
+        <div class="question-section">
+
+          <div class="question-meta">
+            <span>
+              Question {{ currentQuestionIndex() + 1 }}
+            </span>
+
+            <span>
+              Difficulty {{ question.difficulty }}
+            </span>
+          </div>
+
+          <h2>
+            {{ question.questionText }}
+          </h2>
+
+          <div class="options">
+
+            <button
+              type="button"
+              class="answer-option"
+              [class.selected]="
+                isSelected(question.id, 'A')
+              "
+              (click)="selectAnswer(question.id, 'A')">
+
+              <span class="option-letter">
+                A
+              </span>
+
+              <span class="option-text">
+                {{ question.optionA }}
+              </span>
+
+            </button>
+
+            <button
+              type="button"
+              class="answer-option"
+              [class.selected]="
+                isSelected(question.id, 'B')
+              "
+              (click)="selectAnswer(question.id, 'B')">
+
+              <span class="option-letter">
+                B
+              </span>
+
+              <span class="option-text">
+                {{ question.optionB }}
+              </span>
+
+            </button>
+
+            <button
+              type="button"
+              class="answer-option"
+              [class.selected]="
+                isSelected(question.id, 'C')
+              "
+              (click)="selectAnswer(question.id, 'C')">
+
+              <span class="option-letter">
+                C
+              </span>
+
+              <span class="option-text">
+                {{ question.optionC }}
+              </span>
+
+            </button>
+
+            <button
+              type="button"
+              class="answer-option"
+              [class.selected]="
+                isSelected(question.id, 'D')
+              "
+              (click)="selectAnswer(question.id, 'D')">
+
+              <span class="option-letter">
+                D
+              </span>
+
+              <span class="option-text">
+                {{ question.optionD }}
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <div class="navigation">
+
+          <button
+            type="button"
+            class="secondary-button"
+            [disabled]="currentQuestionIndex() === 0"
+            (click)="previousQuestion()">
+            Previous
+          </button>
+
+          @if (!isLastQuestion()) {
+
+            <button
+              type="button"
+              class="primary-button"
+              [disabled]="!hasSelectedAnswer()"
+              (click)="nextQuestion()">
+              Next
+            </button>
+
+          } @else {
+
+            <button
+              type="button"
+              class="primary-button"
+              [disabled]="
+                !hasAnsweredAllQuestions() ||
+                isSubmitting()
+              "
+              (click)="submitAssessment()">
+
+              @if (isSubmitting()) {
+                Submitting...
+              } @else {
+                Submit Assessment
+              }
+
+            </button>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+  }
+
+  @if (result(); as assessmentResult) {
+
+    <section class="result-card">
+
+      <p class="eyebrow">
+        ASSESSMENT COMPLETE
+      </p>
+
+      <h1>
+        Your Assessment Result
+      </h1>
+
+      <p class="result-subtitle">
+        Your skill profile has been updated based on your assessment.
+      </p>
+
+      <div class="result-score">
+        <strong>
+          {{ assessmentResult.percentage }}%
+        </strong>
+
+        <span>
+          {{ assessmentResult.score }}
+          /
+          {{ assessmentResult.totalQuestions }}
+          correct
+        </span>
+      </div>
+
+      <div class="result-level">
+        <span class="result-label">
+          Assessed Level
+        </span>
+
+        <strong>
+          {{ assessmentResult.levelName }}
+        </strong>
+      </div>
+
+      <div class="result-message">
+
+        @if (assessmentResult.resultLevel === 3) {
+          <p>
+            Excellent work. Your assessment indicates an advanced
+            level of knowledge in this skill.
+          </p>
+        }
+
+        @if (assessmentResult.resultLevel === 2) {
+          <p>
+            Good progress. Your assessment indicates an intermediate
+            level of knowledge in this skill.
+          </p>
+        }
+
+        @if (assessmentResult.resultLevel === 1) {
+          <p>
+            This assessment gives you a starting point. Keep learning
+            and practicing to strengthen this skill.
+          </p>
+        }
+
+      </div>
+
+      <div class="result-actions">
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="goToSkills()">
+          View My Skills
+        </button>
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="goToDashboard()">
+          View Dashboard
+        </button>
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="retakeAssessment()">
+          Retake Assessment
+        </button>
+
+      </div>
+
+    </section>
+
+  }
+
+</div>

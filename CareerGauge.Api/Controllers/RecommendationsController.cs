@@ -1,6 +1,7 @@
 using CareerGauge.Application.Recommendations;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CareerGauge.Api.Controllers;
 
@@ -19,8 +20,15 @@ public class RecommendationsController : ControllerBase
 
     [HttpGet("{learnerId}")]
     public async Task<IActionResult> GetRecommendations(
-        int learnerId)
+    int learnerId)
     {
+
+
+        if (!IsCurrentLearner(learnerId))
+        {
+            return Forbid();
+        }
+
         var recommendations =
             await _recommendationService
                 .GetRecommendationsAsync(learnerId);
@@ -33,6 +41,11 @@ public class RecommendationsController : ControllerBase
         int learnerId,
         int careerProfileId)
     {
+        if (!IsCurrentLearner(learnerId))
+        {
+            return Forbid();
+        }
+
         var result =
             await _recommendationService
                 .GetRecommendationDetailsAsync(
@@ -42,12 +55,16 @@ public class RecommendationsController : ControllerBase
         return Ok(result);
     }
 
-
     [HttpGet("{learnerId}/compare")]
     public async Task<IActionResult> CompareCareers(
-    int learnerId,
-    [FromQuery] List<int> careerProfileIds)
+        int learnerId,
+        [FromQuery] List<int> careerProfileIds)
     {
+        if (!IsCurrentLearner(learnerId))
+        {
+            return Forbid();
+        }
+
         var comparisons =
             await _recommendationService
                 .GetComparisonAsync(
@@ -57,7 +74,6 @@ public class RecommendationsController : ControllerBase
         return Ok(comparisons);
     }
 
-
     [HttpGet("careers")]
     public async Task<IActionResult> GetCareerProfiles()
     {
@@ -66,5 +82,17 @@ public class RecommendationsController : ControllerBase
                 .GetCareerProfilesAsync();
 
         return Ok(careers);
+    }
+
+    private bool IsCurrentLearner(int learnerId)
+    {
+        var authenticatedLearnerId =
+            User.FindFirstValue("learnerId");
+
+        return authenticatedLearnerId is not null
+            && int.TryParse(
+                authenticatedLearnerId,
+                out var currentLearnerId)
+            && currentLearnerId == learnerId;
     }
 }

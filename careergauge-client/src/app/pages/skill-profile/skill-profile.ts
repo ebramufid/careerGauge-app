@@ -153,4 +153,8 @@ export class SkillProfile implements OnInit {
         return 'Missing';
     }
   }
+
+  hasAssessment(skillName: string): boolean {
+    return skillName.trim().toLowerCase() === 'c#';
+  }
 }

@@ -31,26 +31,26 @@
     </header>
 
     <div class="skill-summary">
-  <div>
-    <strong>{{ skillSummary().advanced }}</strong>
-    <span>Advanced</span>
-  </div>
+      <div>
+        <strong>{{ skillSummary().advanced }}</strong>
+        <span>Advanced</span>
+      </div>
 
-  <div>
-    <strong>{{ skillSummary().intermediate }}</strong>
-    <span>Intermediate</span>
-  </div>
+      <div>
+        <strong>{{ skillSummary().intermediate }}</strong>
+        <span>Intermediate</span>
+      </div>
 
-  <div>
-    <strong>{{ skillSummary().beginner }}</strong>
-    <span>Beginner</span>
-  </div>
+      <div>
+        <strong>{{ skillSummary().beginner }}</strong>
+        <span>Beginner</span>
+      </div>
 
-  <div>
-    <strong>{{ skillSummary().missing }}</strong>
-    <span>Missing</span>
-  </div>
-</div>
+      <div>
+        <strong>{{ skillSummary().missing }}</strong>
+        <span>Missing</span>
+      </div>
+    </div>
 
     <main class="profile-content">
 
@@ -144,6 +144,16 @@
                 </button>
 
               </div>
+
+              @if (hasAssessment(skill.skillName)) {
+                <div class="assessment-action">
+                  <a
+                    class="assessment-button"
+                    [routerLink]="['/assessment', skill.skillId]">
+                    Take C# Assessment
+                  </a>
+                </div>
+              }
 
             </article>
 

@@ -8,9 +8,18 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  accessToken: string;
   learnerId: number;
   email: string;
+}
+
+export interface RegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface RegisterResponse {
+  message: string;
 }
 
 export interface CurrentUser {
@@ -26,17 +35,26 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-login(request: LoginRequest): Observable<LoginResponse> {
-  return this.http.post<LoginResponse>(
-    `${this.apiUrl}/login`,
-    request,
-    { withCredentials: true }
-  );
-}
+  login(request: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(
+      `${this.apiUrl}/login`,
+      request,
+      { withCredentials: true }
+    );
+  }
 
-getCurrentUser(): Observable<CurrentUser> {
-  return this.http.get<CurrentUser>(
-    `${this.apiUrl}/me`
-  );
-}
+  register(
+    request: RegisterRequest
+  ): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(
+      `${this.apiUrl}/register`,
+      request
+    );
+  }
+
+  getCurrentUser(): Observable<CurrentUser> {
+    return this.http.get<CurrentUser>(
+      `${this.apiUrl}/me`
+    );
+  }
 }

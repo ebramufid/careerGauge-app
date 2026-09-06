@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 export const routes: Routes = [
   {
@@ -20,20 +21,23 @@ export const routes: Routes = [
         .then(m => m.CareerDetails)
   },
   {
-  path: 'skills',
-  loadComponent: () =>
-    import('./pages/skill-profile/skill-profile')
-      .then(m => m.SkillProfile)
-},
-
-{
-  path: 'career-comparison',
-  loadComponent: () =>
-    import('./pages/career-comparison/career-comparison')
-      .then(m => m.CareerComparisonPage)
-},
-{
-  path: 'login',
-  component: LoginComponent
-},
+    path: 'skills',
+    loadComponent: () =>
+      import('./pages/skill-profile/skill-profile')
+        .then(m => m.SkillProfile)
+  },
+  {
+    path: 'career-comparison',
+    loadComponent: () =>
+      import('./pages/career-comparison/career-comparison')
+        .then(m => m.CareerComparisonPage)
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
+  }
 ];

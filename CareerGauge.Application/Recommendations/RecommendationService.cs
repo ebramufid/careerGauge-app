@@ -49,7 +49,19 @@ public class RecommendationService : IRecommendationService
                 PartialSkills = readiness.PartialSkills,
                 MissingSkills = readiness.MissingSkills,
                 SkillGapCount = readiness.SkillGaps.Count(
-                    gap => gap.Gap > 0)
+        gap => gap.Gap > 0),
+
+                Strengths = readiness.SkillGaps
+        .Where(gap => gap.Status == "Met")
+        .Select(gap => gap.SkillName)
+        .ToList(),
+
+                SkillGaps = readiness.SkillGaps
+        .Where(gap => gap.Gap > 0)
+        .OrderByDescending(gap => gap.Gap)
+        .ToList(),
+
+                LearningPriorities = readiness.LearningPriorities
             });
         }
 

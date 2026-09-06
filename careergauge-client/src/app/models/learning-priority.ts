@@ -6,4 +6,5 @@ export interface LearningPriority {
   gap: number;
   status: string;
   priority: string;
+  
 }

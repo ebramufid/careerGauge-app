@@ -1,3 +1,5 @@
+using CareerGauge.Application.Readiness.Dtos;
+
 namespace CareerGauge.Application.Recommendations.Dtos;
 
 public class CareerRecommendationDto
@@ -17,4 +19,10 @@ public class CareerRecommendationDto
     public int MissingSkills { get; set; }
 
     public int SkillGapCount { get; set; }
+
+    public List<string> Strengths { get; set; } = [];
+
+    public List<SkillGapDto> SkillGaps { get; set; } = [];
+
+    public List<LearningPriorityDto> LearningPriorities { get; set; } = [];
 }

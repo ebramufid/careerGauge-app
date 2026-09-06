@@ -145,6 +145,51 @@
                 <span>Missing</span>
               </div>
             </div>
+
+   <div class="recommendation-explanation">
+
+  <h4>Why this career?</h4>
+
+  @if (career.strengths.length > 0) {
+    <div class="explanation-section">
+      <strong>✓ Strong in</strong>
+
+      <p>
+        {{ career.strengths.join(' · ') }}
+      </p>
+    </div>
+  }
+
+  @if (career.skillGaps.length > 0) {
+    <div class="explanation-section">
+      <strong>⚠ Improve</strong>
+
+      <p>
+        {{ career.skillGaps
+          .slice(0, 3)
+          .map(gap => gap.skillName)
+          .join(' · ') }}
+      </p>
+    </div>
+  }
+
+  @if (career.learningPriorities.length > 0) {
+    <div class="explanation-section">
+      <strong>🎯 Next priority</strong>
+
+      <p>
+        {{ career.learningPriorities[0].skillName }}
+        →
+        {{ career.learningPriorities[0].targetLevel === 1
+          ? 'Beginner'
+          : career.learningPriorities[0].targetLevel === 2
+            ? 'Intermediate'
+            : 'Advanced' }}
+      </p>
+    </div>
+  }
+
+</div>         
 <button
   type="button"
   [routerLink]="[

@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CareerGauge.Application.Services;
+using CareerGauge.Infrastructure.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,6 +70,7 @@ builder.Services.AddAuthorization();
 // Application services
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 
